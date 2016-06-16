@@ -1,0 +1,6 @@
+fabric:
+    image: syakesaba/mininet
+    privileged: true
+    stdin_open: true
+    tty: true
+    command: --topo=single,6
