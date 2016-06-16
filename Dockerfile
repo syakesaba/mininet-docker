@@ -1,5 +1,5 @@
 FROM debian
-MAINTAINER David Bainbridge <dbainbri@ciena.com>
+MAINTAINER SYA-KE
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -27,15 +27,21 @@ RUN \
     openssh-client \
     patch \
     vim \
+    scapy \
+    tcpdump \
+    httperf \
+    nmap \
+    tmux \
+    screen \
 
 # Clone and install.
     && git clone -b 2.2.1 $MININET_REPO \
 
 # A few changes to make the install script behave.
     && sed -e 's/sudo //g' \
-    	-e 's/~\//\//g' \
-    	-e 's/\(apt-get -y install\)/\1 --no-install-recommends --no-install-suggests/g' \
-    	-i $MININET_INSTALLER \
+        -e 's/~\//\//g' \
+        -e 's/\(apt-get -y install\)/\1 --no-install-recommends --no-install-suggests/g' \
+        -i $MININET_INSTALLER \
 
 # Install script expects to find this. Easier than patching that part of the script.
     && touch /.bashrc \
@@ -55,9 +61,6 @@ RUN \
 # Create a start script to start OpenVSwitch
 COPY docker-entry-point /docker-entry-point
 RUN chmod 755 /docker-entry-point
-
-VOLUME ["/data"]
-WORKDIR /data
 
 # Default command.
 ENTRYPOINT ["/docker-entry-point"]
