@@ -16,7 +16,29 @@ fabric:
     privileged: true
     stdin_open: true
     tty: true
-    command: --topo=single,6
+    command: --topo=single,3 --mac
 ```
 
-and run "docker-compose run fabric"
+or
+
+```
+ryu:
+    image: osrg/ryu
+    command: ryu-manager ryu.app.simple_switch
+    expose:
+        - "6633/udp"
+        - "6633/tcp"
+
+fabric:
+    image: syakesaba/mininet
+    privileged: true
+    stdin_open: true
+    tty: true
+    command: --topo=single,3 --mac
+    links:
+        - ryu:ryu
+    environment:
+        REMOTE_CONTROLLER: ryu
+```
+
+and run "docker-compose run --rm fabric"

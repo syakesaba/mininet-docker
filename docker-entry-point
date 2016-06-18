@@ -4,5 +4,9 @@ set -e
 # Start the Open Virtual Switch Service
 service openvswitch-switch start
 
-mn $@
-
+if [ "$REMOTE_CONTROLLER" ];then
+    REMOTE_CONTROLLER_IP=`getent hosts $REMOTE_CONTROLLER | cut -d" " -f1`
+    mn --controller=remote,ip=$REMOTE_CONTROLLER_IP $@
+else
+    mn $@
+fi
